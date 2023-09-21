@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core;
+using Microsoft.AspNetCore.Mvc;
+using Model;
 using System.Linq;
-using VivesBlog.Models;
 
 namespace VivesBlog.Controllers
 {
@@ -39,7 +40,7 @@ namespace VivesBlog.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var person = _context.People.Single(p => p.Id == id);
+            var person = _context.People.SingleOrDefault(p => p.Id == id);
 
             return View(person);
         }
@@ -52,7 +53,7 @@ namespace VivesBlog.Controllers
                 return View(person);
             }
 
-            var dbPerson = _context.People.Single(p => p.Id == person.Id);
+            var dbPerson = _context.People.SingleOrDefault(p => p.Id == person.Id);
 
             dbPerson.FirstName = person.FirstName;
             dbPerson.LastName = person.LastName;
@@ -65,7 +66,7 @@ namespace VivesBlog.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var person = _context.People.Single(p => p.Id == id);
+            var person = _context.People.SingleOrDefault(p => p.Id == id);
 
             return View(person);
         }
@@ -73,7 +74,7 @@ namespace VivesBlog.Controllers
         [HttpPost("People/Delete/{id:int}")]
         public IActionResult PeopleDeleteConfirmed(int id)
         {
-            var dbPerson = _context.People.Single(p => p.Id == id);
+            var dbPerson = _context.People.SingleOrDefault(p => p.Id == id);
 
             _context.People.Remove(dbPerson);
 

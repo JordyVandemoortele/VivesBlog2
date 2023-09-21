@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core;
+using Helper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Model;
 using System;
 using System.Linq;
-using VivesBlog.Models;
 
 namespace VivesBlog.Controllers
 {
     public class BlogController : Controller
     {
         private readonly VivesBlogDbContext _context;
+        private readonly ArticleHelper _articleHelper;
         public BlogController(VivesBlogDbContext database)
         {
             _context = database;
@@ -51,7 +54,7 @@ namespace VivesBlog.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var article = _context.Articles.Single(p => p.Id == id);
+            var article = _context.Articles.SingleOrDefault(p => p.Id == id);
 
             var articleModel = CreateArticleModel(article);
 
@@ -66,7 +69,7 @@ namespace VivesBlog.Controllers
                 return View(articleModel);
             }
 
-            var dbArticle = _context.Articles.Single(p => p.Id == article.Id);
+            var dbArticle = _context.Articles.SingleOrDefault(p => p.Id == article.Id);
 
             dbArticle.Title = article.Title;
             dbArticle.Description = article.Description;
@@ -82,14 +85,14 @@ namespace VivesBlog.Controllers
         {
             var article = _context.Articles
                 .Include(a => a.Author)
-                .Single(p => p.Id == id);
+                .SingleOrDefault(p => p.Id == id);
 
             return View(article);
         }
         [HttpPost("Blog/Delete/{id:int}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var dbArticle = _context.Articles.Single(p => p.Id == id);
+            var dbArticle = _context.Articles.SingleOrDefault(p => p.Id == id);
 
             _context.Articles.Remove(dbArticle);
 

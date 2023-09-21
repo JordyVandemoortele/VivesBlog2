@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Core;
 
 namespace VivesBlog.Controllers
 {
